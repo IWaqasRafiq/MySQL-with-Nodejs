@@ -1,0 +1,19 @@
+{
+  "name": "mysql-with-nodejs",
+  "version": "1.0.0",
+  "description": "MySQL with Node.js - Simple CRUD Operations  This repository demonstrates how to perform basic CRUD (Create, Read, Update, Delete) operations using Node.js and MySQL. It provides a simple and easy-to-understand structure for beginners to learn how to connect a Node.js application with a MySQL database.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "env": "^0.0.2",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1"
+  }
+}
