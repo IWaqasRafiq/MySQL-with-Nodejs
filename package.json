@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "^9.8.0",
+    "dotenv": "^16.5.0",
     "env": "^0.0.2",
     "express": "^5.1.0",
     "mysql2": "^3.14.1",

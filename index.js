@@ -1,32 +1,23 @@
 const mysql = require("mysql2");
-const { faker } = require('@faker-js/faker');
-
+const { faker } = require("@faker-js/faker");
+require("dotenv").config();
+const express = require("express");
+const app = express();
 
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password : 'waqas@sql321',
-  database: 'frist_crud',
+  host: "localhost",
+  user: "root",
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
 });
 
-try {
+app.get("/", (req , res)=>{
+  res.send("Welcon to Home page");
+})
 
-  connection.query ("SHOW TABLES", (err, result) => {
-  if(err) throw err; 
-  console.log(result);
-  
-}) 
-  
-} catch (err) {
-  console.log(err);
-  
-}
 
-let getRandomUser = () => {
-  return {
-    Id: faker.datatype.uuid(),
-    username: faker.internet.username(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-  };
-}
+
+app.listen("8080", ()=> {
+  console.log("Server is start")
+});
+
