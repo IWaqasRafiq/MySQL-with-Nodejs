@@ -3,6 +3,12 @@ const { faker } = require("@faker-js/faker");
 require("dotenv").config();
 const express = require("express");
 const app = express();
+let ejs = require('ejs')
+const Path = require("path");
+
+app.set("view engine", "ejs");
+app.set("views", Path.join(__dirname, "/views"));
+
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -12,8 +18,31 @@ const connection = mysql.createConnection({
 });
 
 app.get("/", (req , res)=>{
-  res.send("Welcon to Home page");
-})
+  let q = `SELECT * FROM user`;
+  try {
+  connection.query(q, (err, result) => {
+    if (err) throw err;
+    let users = result;
+    res.render("home.ejs", {users});
+  });
+} catch (err) {
+  console.log(err);
+}
+});
+
+app.get("/user/:id/edit", (req, res)=>{
+  let {id} = req.params;
+  let q = `SELECT * FROM user WHERE id = '${id}'`;
+  try {
+  connection.query(q, (err, result) => {
+    if (err) throw err;
+    let users = result[0];
+    res.render("edit.ejs", {users});
+  });
+} catch (err) {
+  console.log(err);
+}
+});
 
 
 
