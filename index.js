@@ -21,6 +21,12 @@ const connection = mysql.createConnection({
   database: process.env.DATABASE,
 });
 
+const messages = faker.helpers.multiple(() => faker.lorem.paragraphs(3), {
+  count: 94,
+});
+console.log(messages);
+
+
 // home page
 app.get("/", (req , res)=>{
   let q = `SELECT * FROM user`;
@@ -51,20 +57,20 @@ app.post("/user", (req, res)=>{
 });
 
 // user show page
-app.get("/user/:id", (req, res)=>{
-  let {id} = req.params;
-  let q = `SELECT * FROM user WHERE id = '${id}'`;
-  console.log(id);
-  try {
-  connection.query(q, (err, result) => {
-    if (err) throw err;
-    let user = result[0];
-    res.render("show.ejs", {user});
-  });
-} catch (err) {
-  console.log(err);
-}
-});
+// app.get("/user/:id", (req, res)=>{
+//   let {id} = req.params;
+//   let q = `SELECT * FROM user WHERE id = '${id}'`;
+//   console.log(id);
+//   try {
+//   connection.query(q, (err, result) => {
+//     if (err) throw err;
+//     let user = result[0];
+//     res.render("show.ejs", {user});
+//   });
+// } catch (err) {
+//   console.log(err);
+// }
+// });
 
 // user edit page
 app.get("/user/:id/edit", (req, res)=>{
@@ -99,19 +105,32 @@ app.patch("/user/:id", (req, res)=>{
 }
 });
 
-// delete user
-app.delete("/user/:id", (req, res)=>{
+app.get("/user/:id/delete", (req, res)=>{
   let {id} = req.params;
-  let q = `DELETE FROM user WHERE id = '${id}'`;
-  try {
-  connection.query(q, (err, result) => {
-    if (err) throw err;
-    res.redirect("/");
-    // res.send("User deleted successfully");
+  res.render("delete.ejs", {id});
+  
+});
+
+// delete user
+app.delete('/user/:id', (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+
+  const getUserQuery = `SELECT password FROM user WHERE id = ?`;
+  connection.query(getUserQuery, [id], (err, results) => {
+
+    const storedPassword = results[0].password;
+
+    if (password !== storedPassword) {
+      return res.status(401).send("Incorrect password");
+    }
+
+    const deleteQuery = `DELETE FROM user WHERE id = ?`;
+    connection.query(deleteQuery, [id], (err) => {
+      if (err) return res.status(500).send("Error deleting user");
+      res.redirect('/');
+    });
   });
-} catch (err) {
-  console.log(err);
-}
 });
 
 

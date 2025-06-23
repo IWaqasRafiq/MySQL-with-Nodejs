@@ -39,6 +39,9 @@
 <body>
 
   <h1>User Table</h1>
+  <form action="" method="get">
+    <button>Add Blog</button>
+  </form>
 
   <table>
     <thead>
@@ -62,7 +65,7 @@
                 <form action="/user/<%=user.ID%>/edit" method="get">
                     <button>Upadte</button>
                 </form>
-                <form action="" method="">
+                <form action="/user/<%=user.ID%>/delete" method="get" >
                     <button>Delete</button>
                 </form>
             </td>
