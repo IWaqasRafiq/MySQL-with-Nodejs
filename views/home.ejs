@@ -20,12 +20,19 @@
       border: 1px solid #999;
       padding: 8px 12px;
       text-align: left;
+      
     }
     th {
       background-color: #f2f2f2;
     }
     tr:nth-child(even) {
       background-color: #f9f9f9;
+      
+    }
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
     }
   </style>
 </head>
@@ -48,9 +55,15 @@
           <td><%= index + 1 %></td>
           <td><%= user.username %></td>
           <td><%= user.email %></td>
-            <td>
-                <form action="/user/<%= user.ID %>/edit" method="post">
+            <td class="action-buttons">
+                <form action="" method="">
+                    <button>Read</button>
+                </form>
+                <form action="/user/<%=user.ID%>/edit" method="get">
                     <button>Upadte</button>
+                </form>
+                <form action="" method="">
+                    <button>Delete</button>
                 </form>
             </td>
         </tr>
