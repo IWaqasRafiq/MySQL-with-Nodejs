@@ -21,12 +21,6 @@ const connection = mysql.createConnection({
   database: process.env.DATABASE,
 });
 
-const messages = faker.helpers.multiple(() => faker.lorem.paragraphs(3), {
-  count: 94,
-});
-console.log(messages);
-
-
 // home page
 app.get("/", (req , res)=>{
   let q = `SELECT * FROM user`;
@@ -42,14 +36,17 @@ app.get("/", (req , res)=>{
 });
 
 // create user page
+app.get("/user", (req, res)=>{
+    res.render("insert.ejs");
+});
 app.post("/user", (req, res)=>{
-  let {name, email} = req.body;
-  let q = `INSERT INTO user (username, email) VALUES ('${name}', '${email}')`;
+  let id = faker.string.uuid();
+  let {name, email, password, textarea} = req.body;
+  let q = `INSERT INTO user (id, username, email, password, message) VALUES ('${id}','${name}', '${email}', '${password}', '${textarea}')`;
   try {
   connection.query(q, (err, result) => {
     if (err) throw err;
     res.redirect("/");
-    // res.send("User added successfully");
   });
 } catch (err) {
   console.log(err);
@@ -57,20 +54,21 @@ app.post("/user", (req, res)=>{
 });
 
 // user show page
-// app.get("/user/:id", (req, res)=>{
-//   let {id} = req.params;
-//   let q = `SELECT * FROM user WHERE id = '${id}'`;
-//   console.log(id);
-//   try {
-//   connection.query(q, (err, result) => {
-//     if (err) throw err;
-//     let user = result[0];
-//     res.render("show.ejs", {user});
-//   });
-// } catch (err) {
-//   console.log(err);
-// }
-// });
+app.get("/user/:id", (req, res)=>{
+  let {id} = req.params;
+  let q = `SELECT * FROM user WHERE id = '${id}'`;
+  // res.send("Successfully fetched user data");
+  console.log(id);
+  try {
+  connection.query(q, (err, result) => {
+    if (err) throw err;
+    let users = result[0];
+    res.render("user.ejs", {users});
+  });
+} catch (err) {
+  console.log(err);
+}
+});
 
 // user edit page
 app.get("/user/:id/edit", (req, res)=>{
